@@ -1,0 +1,19 @@
+@charset "UTF-8";
+
+header {
+	background-size: cover;
+	filter: brightness(30%);
+	height: 500px;
+	position: absolute;
+	top: 0;
+	width: 100%;
+}
+
+main {
+	margin-top: calc(250px - 56px);
+	position: relative;
+}
+
+nav {
+	z-index: 1;
+}

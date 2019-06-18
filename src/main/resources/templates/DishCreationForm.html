@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+	<meta charset="UTF-8">
+	<title>The Food</title>
+	<link rel="stylesheet" href="/css/all.min.css">
+	<link rel="stylesheet" href="/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+	<nav class="navbar navbar-expand-lg navbar-dark">
+		<div class="container">
+			<a class="navbar-brand" href="#">The Food</a>
+
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+				aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<div class="collapse navbar-collapse" id="navbarNav">
+				<ul class="navbar-nav ml-auto">
+					<li class="nav-item">
+						<a class="nav-link" href="/">
+							Home
+						</a>
+					</li>
+					<li class="nav-item active" sec:authorize="hasRole('ROLE_ADMIN')">
+						<a class="nav-link" href="/dish/list">
+							Pratos <span class="sr-only">(current)</span>
+						</a>
+					</li>
+					<li class="nav-item" sec:authorize="hasRole('ROLE_CLIENT')">
+						<a class="nav-link" href="/my-orders">Meus Pedidos</a>
+					</li>
+					<li class="nav-item" sec:authorize="hasRole('ROLE_CLIENT')">
+						<a class="nav-link" href="#">
+							<i class="fas fa-shopping-bag fa-lg"></i>
+						</a>
+					</li>
+					<li class="nav-item" sec:authorize="!isAuthenticated()">
+						<a class="nav-link" href="/user/sign-up">Sign Up</a>
+					</li>
+					<li class="nav-item" sec:authorize="!isAuthenticated()">
+						<a class="nav-link" href="/user/sign-in">Sign In</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<header style="background-image: url('/img/header-1.jpg')"></header>
+
+	<main>
+		<div class="container">
+			<div class="card shadow">
+				<div class="card-body">
+					<nav aria-label="breadcrumb">
+						<ol class="breadcrumb">
+							<li class="breadcrumb-item"><a href="/">The Food</a></li>
+							<li class="breadcrumb-item"><a href="/dish/list">Pratos</a></li>
+							<li class="breadcrumb-item active" aria-current="page" th:text="${pageTitle}"></li>
+						</ol>
+					</nav>
+					<h4 class="card-title" th:text="${pageTitle}"></h4>
+					<form action="/dish/save" method="post" enctype="multipart/form-data" th:object="${dish}">
+
+						<div class="alert alert-success" role="alert" th:if="${!#strings.isEmpty(message)}">
+							<span th:text="${message}"></span>
+						</div>
+
+						<input type="hidden" th:field="*{id}">
+						<div class="form-group">
+							<label for="nameInput">Nome</label>
+							<input type="text" class="form-control" id="nameInput" placeholder="Prato A" th:field="*{name}" th:classappend="${#fields.hasErrors('name')} ? is-invalid">
+							<div class="invalid-feedback" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">errors</div>
+						</div>
+						<div class="form-group">
+							<label for="imageInput">Imagem</label>
+							<div class="custom-file">
+								<input type="file" class="custom-file-input" id="imageInput" name="dishImage" th:classappend="${#fields.hasErrors('global')} ? is-invalid">
+								<label class="custom-file-label" for="imageInput">Selecione uma imagem</label>
+								<div class="invalid-feedback" th:if="${#fields.hasErrors('global')}" th:errors="*{global}">errors</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="priceInput">Preço</label>
+							<input type="text" class="form-control" id="priceInput" placeholder="0.00" th:field="*{price}" th:classappend="${#fields.hasErrors('price')} ? is-invalid">
+							<div class="invalid-feedback" th:if="${#fields.hasErrors('price')}" th:errors="*{price}">errors</div>
+						</div>
+						<button type="submit" class="btn btn-primary float-right">
+							<i class="fas fa-save"></i> Salvar
+						</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</main>
+
+	<footer></footer>
+
+	<script defer type="text/javascript" src="/js/jquery.js"></script>
+	<script defer type="text/javascript" src="/js/jquery.mask.min.js"></script>
+	<script defer type="text/javascript" src="/js/bootstrap.min.js"></script>
+	<script defer type="text/javascript" src="/js/script.js"></script>
+</body>
+</html>

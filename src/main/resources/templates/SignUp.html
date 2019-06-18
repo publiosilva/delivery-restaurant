@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>The Food</title>
+	<link rel="stylesheet" href="/css/all.min.css">
+	<link rel="stylesheet" href="/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+	<nav class="navbar navbar-dark">
+		<div class="container">
+			<a class="navbar-brand" href="/">The Food</a>
+		</div>
+	</nav>
+
+	<header style="background-image: url('/img/header-1.jpg')"></header>
+
+	<main>
+		<div class="container">
+			<div class="card shadow">
+				<div class="card-body">
+					<nav aria-label="breadcrumb">
+						<ol class="breadcrumb">
+							<li class="breadcrumb-item">
+								<a href="/">The Food</a>
+							</li>
+							<li class="breadcrumb-item active" aria-current="page">Cadastro</li>
+						</ol>
+					</nav>
+					<h4 class="card-title">Cadastro</h4>
+					<form action="/user/save" method="post" th:object="${user}">
+						<!-- Success Alert -->
+						<div class="alert alert-success" role="alert" th:if="${!#strings.isEmpty(message)}">
+							<span th:text="${message}"></span>
+						</div>
+						
+						<input type="hidden" th:field="*{id}">
+						<div class="form-group">
+							<label for="nameInput">Nome</label>
+							<input type="text" class="form-control" id="nameInput" placeholder="John Doe" th:field="*{name}" th:classappend="${#fields.hasErrors('name')} ? is-invalid">
+							<div class="invalid-feedback" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">errors</div>
+						</div>
+						<div class="form-group">
+							<label for="cpfInput">CPF</label>
+							<input type="text" class="form-control cpf" id="cpfInput" placeholder="000.000.000-00" th:field="*{cpf}" th:classappend="${#fields.hasErrors('cpf')} ? is-invalid">
+							<div class="invalid-feedback" th:if="${#fields.hasErrors('cpf')}" th:errors="*{cpf}">errors</div>
+						</div>
+						<div class="form-group">
+							<label for="dateOfBirthInput">Data De Nascimento</label>
+							<input type="text" class="form-control date-of-birth" id="dateOfBirthInput" placeholder="01/01/0001" th:field="*{dateOfBirth}" th:classappend="${#fields.hasErrors('dateOfBirth')} ? is-invalid">
+							<div class="invalid-feedback" th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}">errors</div>
+						</div>
+						<div class="form-group">
+							<label for="addressInput">Endereço</label>
+							<input type="text" class="form-control" id="addressInput" placeholder="Rua R, 001. Cidade C - Estado E" th:field="*{address}" th:classappend="${#fields.hasErrors('address')} ? is-invalid">
+							<div class="invalid-feedback" th:if="${#fields.hasErrors('address')}" th:errors="*{address}">errors</div>
+						</div>
+						<div class="form-group">
+							<label for="emailInput">E-mail</label>
+							<input type="email" class="form-control" id="emailInput" placeholder="johndoe@mail.com" th:field="*{email}" th:classappend="${#fields.hasErrors('email')} ? is-invalid">
+							<div class="invalid-feedback" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">errors</div>
+						</div>
+						<div class="form-group">
+							<label for="passwordInput">Senha</label>
+							<input type="password" class="form-control" id="passwordInput" placeholder="senha" th:field="*{password}" th:classappend="${#fields.hasErrors('password')} ? is-invalid">
+							<div class="invalid-feedback" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">errors</div>
+						</div>
+						<button type="submit" class="btn btn-primary float-right">
+							<i class="fas fa-save"></i> Salvar
+						</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</main>
+
+	<footer></footer>
+
+	<script defer type="text/javascript" src="/js/jquery.js"></script>
+	<script defer type="text/javascript" src="/js/jquery.mask.min.js"></script>
+	<script defer type="text/javascript" src="/js/bootstrap.min.js"></script>
+	<script defer type="text/javascript" src="/js/script.js"></script>
+</body>
+
+</html>
