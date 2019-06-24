@@ -1,82 +1,115 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
 <head>
-<meta charset="UTF-8">
-<title>The Food</title>
-<link rel="stylesheet" href="css/all.min.css">
-<link rel="stylesheet" href="css/bootstrap.min.css">
-<link rel="stylesheet" href="css/style.css">
+	<meta charset="UTF-8">
+	<title>The Food</title>
+	<link rel="stylesheet" href="/css/all.min.css">
+	<link rel="stylesheet" href="/css/bootstrap.min.css">
+	<link rel="stylesheet" href="/css/style.css">
 </head>
+
 <body>
 	<nav class="navbar navbar-expand-lg navbar-dark">
 		<div class="container">
-			<a class="navbar-brand" href="#">The Food</a>
+			<a class="navbar-brand" href="/">The Food</a>
 
-			<button class="navbar-toggler" type="button" data-toggle="collapse"
-				data-target="#navbarNav" aria-controls="navbarNav"
-				aria-expanded="false" aria-label="Toggle navigation">
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+				aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
 
 			<div class="collapse navbar-collapse" id="navbarNav">
-				<ul class="navbar-nav">
-					<li class="nav-item active"><a class="nav-link" href="#">
-							Produtos <span class="sr-only">(current)</span>
-					</a></li>
-					<li class="nav-item"><a class="nav-link" href="#">Features</a>
+				<ul class="navbar-nav ml-auto">
+					<li class="nav-item">
+						<a class="nav-link" href="/">Home</a>
 					</li>
-					<li class="nav-item"><a class="nav-link" href="#">Pricing</a></li>
-					<li class="nav-item"><a class="nav-link disabled" href="#"
-						tabindex="-1" aria-disabled="true">Disabled</a></li>
+					<li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
+						<a class="nav-link" href="/dish/list">Pratos</a>
+					</li>
+					<li class="nav-item" sec:authorize="hasRole('ROLE_CLIENT')">
+						<a class="nav-link" href="/purchase-order/list">Meus Pedidos</a>
+					</li>
+					<li class="nav-item active" sec:authorize="hasRole('ROLE_CLIENT')">
+						<a class="nav-link" href="/shopping-bag">
+							<i class="fas fa-shopping-bag fa-lg"></i> <span class="sr-only">(current)</span>
+						</a>
+					</li>
+					<li class="nav-item" sec:authorize="!isAuthenticated()">
+						<a class="nav-link" href="/user/sign-up">Sign Up</a>
+					</li>
+					<li class="nav-item" sec:authorize="!isAuthenticated()">
+						<a class="nav-link" href="/user/sign-in">Sign In</a>
+					</li>
+					<li class="nav-item" sec:authorize="isAuthenticated()">
+						<a class="nav-link" href="/logout">Logout</a>
+					</li>
 				</ul>
 			</div>
 		</div>
 	</nav>
 
-	<header style="background-image: url('/images/header-1.jpg')"></header>
+	<header style="background-image: url('/img/header-1.jpg')"></header>
 
 	<main>
-	<div class="container">
-		<div class="card shadow">
-			<div class="card-body">
-				<nav aria-label="breadcrumb">
-					<ol class="breadcrumb">
-						<li class="breadcrumb-item"><a href="/">The Food</a></li>
-						<li class="breadcrumb-item active" aria-current="page">Sacola
-							de Compras</li>
-					</ol>
-				</nav>
-				<h4 class="card-title">Sacola de Compras</h4>
-				<table class="table">
-					<thead>
-						<tr>
-							<th>#</th>
-							<th>Nome</th>
-							<th>Preço</th>
-							<th></th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>1</td>
-							<td>Mark</td>
-							<td>Otto</td>
-							<td class="pr-0">
-								<button type="button" class="btn btn-danger float-right">
-									<i class="fas fa-trash-alt"></i> Excluir
-								</button>
-							</td>
-						</tr>
-					</tbody>
-				</table>
+		<div class="container">
+			<div class="card shadow">
+				<div class="card-body">
+					<nav aria-label="breadcrumb">
+						<ol class="breadcrumb">
+							<li class="breadcrumb-item"><a href="/">The Food</a></li>
+							<li class="breadcrumb-item active" aria-current="page">Sacola
+								de Compras</li>
+						</ol>
+					</nav>
+					<div class="alert alert-success" role="alert" th:if="${!#strings.isEmpty(message)}">
+						<span th:text="${message}"></span>
+					</div>
+					<h4 class="card-title">Sacola de Compras</h4>
+					<table class="table">
+						<thead>
+							<tr>
+								<th>#</th>
+								<th>Nome</th>
+								<th>Preço</th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr th:each="dish,iter : ${dishes}">
+								<td th:text="${iter.index + 1}"></td>
+								<td th:text="${dish.name}"></td>
+								<td th:text="'R$ ' + ${dish.price}"></td>
+								<td class="pr-0">
+									<a th:href="@{'/shopping-bag/remove-dish/'+${dish.id}}">
+										<button type="button" class="btn btn-danger float-right">
+											<i class="fas fa-trash-alt"></i> Excluir
+										</button>
+									</a>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<form action="/purchase-order/save" method="post" th:object="${purchaseOrder}">
+						<div class="form-group">
+							<label for="nameInput">Endereço de Entrega</label>
+							<input type="text" class="form-control" id="deliveryAddressInput" placeholder="Rua R, 001. Cidade C - Estado E" th:field="*{deliveryAddress}" th:classappend="${#fields.hasErrors('deliveryAddress')} ? is-invalid">
+							<div class="invalid-feedback" th:if="${#fields.hasErrors('deliveryAddress')}" th:errors="*{deliveryAddress}">errors</div>
+						</div>
+						
+						<button type="submit" class="btn btn-primary float-right">
+							<i class="fas fa-save"></i> Salvar
+						</button>
+					</form>
+				</div>
 			</div>
 		</div>
-	</div>
 	</main>
 
 	<footer></footer>
 
-	<script defer type="text/javascript" src="js/jquery.js"></script>
-	<script defer type="text/javascript" src="js/bootstrap.min.js"></script>
+	<script defer type="text/javascript" src="/js/jquery.js"></script>
+	<script defer type="text/javascript" src="/js/bootstrap.min.js"></script>
 </body>
+
 </html>

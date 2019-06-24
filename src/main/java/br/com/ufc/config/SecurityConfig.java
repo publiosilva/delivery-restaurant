@@ -22,12 +22,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable().authorizeRequests()
 
-				.antMatchers("/").permitAll().antMatchers("/user/sign-up").permitAll().antMatchers("/user/save")
-				.permitAll()
+				.antMatchers("/").permitAll()
+				.antMatchers("/user/sign-up").permitAll()
+				.antMatchers("/user/save").permitAll()
 
-				.antMatchers("/dish/list").hasRole("ADMIN").antMatchers("/dish/create").hasRole("ADMIN")
-				.antMatchers("/dish/update").hasRole("ADMIN").antMatchers("/dish/save").hasRole("ADMIN")
+				.antMatchers("/dish/list").hasRole("ADMIN")
+				.antMatchers("/dish/create").hasRole("ADMIN")
+				.antMatchers("/dish/update").hasRole("ADMIN")
+				.antMatchers("/dish/save").hasRole("ADMIN")
 				.antMatchers("/dish/delete").hasRole("ADMIN")
+
+				.antMatchers("/purchase-order/list").hasRole("CLIENT")
+				.antMatchers("/purchase-order/save").hasRole("CLIENT")
+				.antMatchers("/shopping-bag").hasRole("CLIENT")
+				.antMatchers("/shopping-bag/add-dish").hasRole("CLIENT")
+				.antMatchers("/shopping-bag/remove-dish").hasRole("CLIENT")
 
 				.anyRequest().authenticated()
 

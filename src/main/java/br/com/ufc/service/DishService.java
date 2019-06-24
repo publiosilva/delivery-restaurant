@@ -1,5 +1,6 @@
 package br.com.ufc.service;
 
+import java.io.File;
 import java.util.List;
 
 import org.apache.commons.io.FilenameUtils;
@@ -18,20 +19,21 @@ public class DishService {
 	private DishRepository dishRepository;
 
 	public void save(Dish dish, MultipartFile image) {
-		String imageName = null;
-		String imageExt = FilenameUtils.getExtension(image.getOriginalFilename());
+		if (image.isEmpty() == false) {
+			String imageName = String.valueOf(System.currentTimeMillis());
+			String imageExt = FilenameUtils.getExtension(image.getOriginalFilename());
 
-		if (dish.getImage() == null) {
-			imageName = String.valueOf(System.currentTimeMillis());
-		} else {
-			imageName = image.getName();
+//			Delete old image
+			new File("images/" + dish.getImage()).delete();
+
+//			Save new image
+			FileUtils.saveImage("images/" + imageName + "." + imageExt, image);
+
+//			Set new image
+			dish.setImage(imageName + "." + imageExt);
 		}
 
-		dish.setImage(imageName + "." + imageExt);
 		dishRepository.save(dish);
-
-		String path = "images/" + imageName + "." + imageExt;
-		FileUtils.saveImage(path, image);
 	}
 
 	public List<Dish> list() {
