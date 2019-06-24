@@ -88,6 +88,10 @@
 									</a>
 								</td>
 							</tr>
+							<tr>
+								<td colspan="2" class="font-weight-bold">Total</td>
+								<td colspan="2" th:text="'R$ ' + ${amount}"></td>
+							</tr>
 						</tbody>
 					</table>
 					<form action="/purchase-order/save" method="post" th:object="${purchaseOrder}">

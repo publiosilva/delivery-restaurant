@@ -55,7 +55,7 @@ public class PurchaseOrderController {
 
 		purchaseOrder.setDate(new Date());
 		purchaseOrder.setUser(userService.findByEmail(SessionUtils.getCurrentUsername()));
-		purchaseOrder.setValue(shoppingBagService.getTotalValueOfTheShoppingBag(request));
+		purchaseOrder.setAmount(shoppingBagService.getAmountOfTheShoppingBag(request));
 
 //		Clear shopping bar
 		shoppingBagService.clearShoppingBag(response);

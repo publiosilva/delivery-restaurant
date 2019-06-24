@@ -25,7 +25,7 @@ public class PurchaseOrder {
 	@Temporal(TemporalType.DATE)
 	private Date date;
 
-	private Double value;
+	private Double amount;
 
 	@NotBlank(message = "Por favor, forneça um endereço de entrega")
 	private String deliveryAddress;
@@ -50,12 +50,12 @@ public class PurchaseOrder {
 		this.date = date;
 	}
 
-	public Double getValue() {
-		return value;
+	public Double getAmount() {
+		return amount;
 	}
 
-	public void setValue(Double value) {
-		this.value = value;
+	public void setAmount(Double amount) {
+		this.amount = amount;
 	}
 
 	public String getDeliveryAddress() {

@@ -47,15 +47,15 @@ public class ShoppingBagService {
 		return dishes;
 	}
 
-	public double getTotalValueOfTheShoppingBag(HttpServletRequest request) {
+	public double getAmountOfTheShoppingBag(HttpServletRequest request) {
 		List<Dish> dishes = getDishesInShoppingBag(request);
-		double totalValue = 0;
+		double amount = 0;
 
 		for (Dish dish : dishes) {
-			totalValue += dish.getPrice();
+			amount += dish.getPrice();
 		}
 
-		return totalValue;
+		return amount;
 	}
 
 	public void removeDishFromShoppingBag(HttpServletRequest request, HttpServletResponse response, Long id) {
