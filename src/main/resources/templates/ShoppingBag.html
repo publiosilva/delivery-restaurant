@@ -66,34 +66,36 @@
 						<span th:text="${message}"></span>
 					</div>
 					<h4 class="card-title">Sacola de Compras</h4>
-					<table class="table">
-						<thead>
-							<tr>
-								<th>#</th>
-								<th>Nome</th>
-								<th>Preço</th>
-								<th></th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr th:each="item,iter : ${items}">
-								<td th:text="${iter.index + 1}"></td>
-								<td th:text="${item.dish.name}"></td>
-								<td th:text="'R$ ' + ${item.dish.price}"></td>
-								<td class="pr-0">
-									<a th:href="@{'/shopping-bag/remove-dish/'+${item.dish.id}}">
-										<button type="button" class="btn btn-danger float-right">
-											<i class="fas fa-trash-alt"></i> Excluir
-										</button>
-									</a>
-								</td>
-							</tr>
-							<tr>
-								<td colspan="2" class="font-weight-bold">Total</td>
-								<td colspan="2" th:text="'R$ ' + ${amount}"></td>
-							</tr>
-						</tbody>
-					</table>
+					<div class="table-responsive">
+						<table class="table">
+							<thead>
+								<tr>
+									<th>#</th>
+									<th>Nome</th>
+									<th>Preço</th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr th:each="item,iter : ${items}">
+									<td th:text="${iter.index + 1}"></td>
+									<td th:text="${item.dish.name}"></td>
+									<td th:text="'R$ ' + ${item.dish.price}"></td>
+									<td class="pr-0">
+										<a th:href="@{'/shopping-bag/remove-dish/'+${item.dish.id}}">
+											<button type="button" class="btn btn-danger float-right">
+												<i class="fas fa-trash-alt"></i> Excluir
+											</button>
+										</a>
+									</td>
+								</tr>
+								<tr>
+									<td colspan="2" class="font-weight-bold">Total</td>
+									<td colspan="2" th:text="'R$ ' + ${amount}"></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
 					<form action="/purchase-order/save" method="post" th:object="${purchaseOrder}">
 						<div class="form-group">
 							<label for="nameInput">Endereço de Entrega</label>
