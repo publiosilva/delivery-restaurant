@@ -21,7 +21,7 @@
 
 			<div class="collapse navbar-collapse" id="navbarNav">
 				<ul class="navbar-nav ml-auto">
-					<li class="nav-item active">
+					<li class="nav-item">
 						<a class="nav-link" href="/">Home</a>
 					</li>
 					<li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')">
@@ -70,6 +70,10 @@
 						<!-- Success Alert -->
 						<div class="alert alert-success" role="alert" th:if="${!#strings.isEmpty(message)}">
 							<span th:text="${message}"></span>
+						</div>
+						<!-- Error Alert -->
+						<div class="alert alert-danger" role="alert" th:if="${!#strings.isEmpty(errorMessage)}">
+							<span th:text="${errorMessage}"></span>
 						</div>
 						
 						<input type="hidden" th:field="*{id}">

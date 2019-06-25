@@ -1,6 +1,7 @@
 package br.com.ufc.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -40,8 +41,12 @@ public class UserController {
 			return modelAndView;
 		}
 
-		userService.save(user);
-		modelAndView.addObject("message", "Usuário foi salvo com sucesso");
+		try {
+			userService.save(user);
+			modelAndView.addObject("message", "Usuário foi salvo com sucesso");
+		} catch (DataIntegrityViolationException e) {
+			modelAndView.addObject("errorMessage", "O email fornecido já existe");
+		}
 
 		return modelAndView;
 	}
