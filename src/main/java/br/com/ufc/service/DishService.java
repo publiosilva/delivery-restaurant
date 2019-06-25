@@ -45,6 +45,10 @@ public class DishService {
 	}
 
 	public void delete(Long id) {
+//		Delete old image
+		Dish dish = findById(id);
+		new File("images/" + dish.getImage()).delete();
+
 		dishRepository.deleteById(id);
 	}
 

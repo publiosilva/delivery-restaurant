@@ -1,9 +1,12 @@
 package br.com.ufc.model;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -19,6 +22,9 @@ public class Dish {
 
 	@NotNull(message = "Por favor, forneça um preço")
 	private Double price;
+
+	@OneToMany(mappedBy = "dish")
+	private List<PurchaseOrderItem> purchaseOrderItems;
 
 	private String image;
 
@@ -52,6 +58,14 @@ public class Dish {
 
 	public void setImage(String image) {
 		this.image = image;
+	}
+
+	public List<PurchaseOrderItem> getPurchaseOrderItems() {
+		return purchaseOrderItems;
+	}
+
+	public void setPurchaseOrderItems(List<PurchaseOrderItem> purchaseOrderItems) {
+		this.purchaseOrderItems = purchaseOrderItems;
 	}
 
 }

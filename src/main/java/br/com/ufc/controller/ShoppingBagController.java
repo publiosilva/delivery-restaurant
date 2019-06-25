@@ -23,7 +23,7 @@ public class ShoppingBagController {
 	public ModelAndView shoppingBag(HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView("ShoppingBag");
 		modelAndView.addObject("amount", shoppingBagService.getAmountOfTheShoppingBag(request));
-		modelAndView.addObject("dishes", shoppingBagService.getDishesInShoppingBag(request));
+		modelAndView.addObject("items", shoppingBagService.getItemsInShoppingBag(request));
 		modelAndView.addObject("purchaseOrder", new PurchaseOrder());
 
 		return modelAndView;
@@ -32,7 +32,7 @@ public class ShoppingBagController {
 	@RequestMapping("/add-dish/{id}")
 	public ModelAndView addDishAtShoppingBag(HttpServletRequest request, HttpServletResponse response,
 			@PathVariable Long id) {
-		shoppingBagService.addDishAtShoppingBag(request, response, id);
+		shoppingBagService.addItemAtShoppingBag(request, response, id);
 		ModelAndView modelAndView = new ModelAndView("redirect:/shopping-bag");
 		modelAndView.addObject("amount", shoppingBagService.getAmountOfTheShoppingBag(request));
 
@@ -42,7 +42,7 @@ public class ShoppingBagController {
 	@RequestMapping("/remove-dish/{id}")
 	public ModelAndView removeDishFromShoppingBag(HttpServletRequest request, HttpServletResponse response,
 			@PathVariable Long id) {
-		shoppingBagService.removeDishFromShoppingBag(request, response, id);
+		shoppingBagService.removeItemFromShoppingBag(request, response, id);
 		ModelAndView modelAndView = new ModelAndView("redirect:/shopping-bag");
 		modelAndView.addObject("amount", shoppingBagService.getAmountOfTheShoppingBag(request));
 

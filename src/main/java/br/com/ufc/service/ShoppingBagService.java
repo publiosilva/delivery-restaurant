@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.ufc.model.Dish;
+import br.com.ufc.model.PurchaseOrderItem;
 import br.com.ufc.util.CookieUtils;
 import br.com.ufc.util.SessionUtils;
 
@@ -19,50 +20,52 @@ public class ShoppingBagService {
 	@Autowired
 	private DishService dishService;
 
-	public void addDishAtShoppingBag(HttpServletRequest request, HttpServletResponse response, Long id) {
+	public void addItemAtShoppingBag(HttpServletRequest request, HttpServletResponse response, Long dishId) {
 		String dishesInShoppingBag = CookieUtils.getValue(request, SessionUtils.getCurrentUsername());
 
 		if (dishesInShoppingBag != null) {
-			dishesInShoppingBag += String.valueOf(id) + "-";
+			dishesInShoppingBag += String.valueOf(dishId) + "-";
 		} else {
-			dishesInShoppingBag = String.valueOf(id) + "-";
+			dishesInShoppingBag = String.valueOf(dishId) + "-";
 		}
 
 		CookieUtils.setValue(response, SessionUtils.getCurrentUsername(), dishesInShoppingBag);
 	}
 
-	public List<Dish> getDishesInShoppingBag(HttpServletRequest request) {
+	public List<PurchaseOrderItem> getItemsInShoppingBag(HttpServletRequest request) {
 		String dishesInShoppingBagString = CookieUtils.getValue(request, SessionUtils.getCurrentUsername());
-		List<Dish> dishes = new ArrayList<Dish>();
+		List<PurchaseOrderItem> purchaseOrderItems = new ArrayList<>();
 
 		if (dishesInShoppingBagString != null && dishesInShoppingBagString.isEmpty() == false) {
 			String[] dishesInShoppingBag = dishesInShoppingBagString.split("-");
 
 			for (String dishId : dishesInShoppingBag) {
 				Dish dish = dishService.findById(Long.parseLong(dishId));
-				dishes.add(dish);
+				PurchaseOrderItem purchaseOrderItem = new PurchaseOrderItem();
+				purchaseOrderItem.setDish(dish);
+				purchaseOrderItems.add(purchaseOrderItem);
 			}
 		}
 
-		return dishes;
+		return purchaseOrderItems;
 	}
 
 	public double getAmountOfTheShoppingBag(HttpServletRequest request) {
-		List<Dish> dishes = getDishesInShoppingBag(request);
+		List<PurchaseOrderItem> purchaseOrderItems = getItemsInShoppingBag(request);
 		double amount = 0;
 
-		for (Dish dish : dishes) {
-			amount += dish.getPrice();
+		for (PurchaseOrderItem purchaseOrderItem : purchaseOrderItems) {
+			amount += purchaseOrderItem.getDish().getPrice();
 		}
 
 		return amount;
 	}
 
-	public void removeDishFromShoppingBag(HttpServletRequest request, HttpServletResponse response, Long id) {
+	public void removeItemFromShoppingBag(HttpServletRequest request, HttpServletResponse response, Long dishId) {
 		String dishesInShoppingBag = CookieUtils.getValue(request, SessionUtils.getCurrentUsername());
 
 		if (dishesInShoppingBag != null) {
-			dishesInShoppingBag = dishesInShoppingBag.replace(id + "-", "");
+			dishesInShoppingBag = dishesInShoppingBag.replace(dishId + "-", "");
 		}
 
 		CookieUtils.setValue(response, SessionUtils.getCurrentUsername(), dishesInShoppingBag);

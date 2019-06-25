@@ -76,12 +76,12 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr th:each="dish,iter : ${dishes}">
+							<tr th:each="item,iter : ${items}">
 								<td th:text="${iter.index + 1}"></td>
-								<td th:text="${dish.name}"></td>
-								<td th:text="'R$ ' + ${dish.price}"></td>
+								<td th:text="${item.dish.name}"></td>
+								<td th:text="'R$ ' + ${item.dish.price}"></td>
 								<td class="pr-0">
-									<a th:href="@{'/shopping-bag/remove-dish/'+${dish.id}}">
+									<a th:href="@{'/shopping-bag/remove-dish/'+${item.dish.id}}">
 										<button type="button" class="btn btn-danger float-right">
 											<i class="fas fa-trash-alt"></i> Excluir
 										</button>

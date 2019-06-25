@@ -56,9 +56,12 @@ public class DishController {
 			@RequestParam(value = "dishImage") MultipartFile dishImage) {
 		ModelAndView modelAndView = new ModelAndView("DishCreationForm");
 
+//		If creating a new dish
 		if (dish.getId() == null) {
+//			If there is not a selected image returns an error
 			if (dishImage.isEmpty()) {
 				bindingResult.addError(new ObjectError("dishImage", "Por favor, forneça uma imagem"));
+//			If there is a selected image, make sure that it is valid
 			} else if (!(dishImage.getOriginalFilename().endsWith(".jpeg")
 					|| dishImage.getOriginalFilename().endsWith(".jpg")
 					|| dishImage.getOriginalFilename().endsWith(".png"))) {

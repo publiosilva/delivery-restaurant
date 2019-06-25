@@ -33,6 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/dish/delete").hasRole("ADMIN")
 
 				.antMatchers("/purchase-order/list").hasRole("CLIENT")
+				.antMatchers("/purchase-order/details").hasRole("CLIENT")
 				.antMatchers("/purchase-order/save").hasRole("CLIENT")
 				.antMatchers("/shopping-bag").hasRole("CLIENT")
 				.antMatchers("/shopping-bag/add-dish").hasRole("CLIENT")

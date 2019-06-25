@@ -60,33 +60,24 @@
 					<nav aria-label="breadcrumb">
 						<ol class="breadcrumb">
 							<li class="breadcrumb-item"><a href="/">The Food</a></li>
-							<li class="breadcrumb-item active" aria-current="page">Meus Pedidos</li>
+							<li class="breadcrumb-item"><a href="/purchase-order/list">Meus Pedidos</a></li>
+							<li class="breadcrumb-item active" aria-current="page">Detalhes</li>
 						</ol>
 					</nav>
-					<h4 class="card-title">Meus Pedidos</h4>
+					<h4 class="card-title">Pratos</h4>
 					<table class="table">
 						<thead>
 							<tr>
 								<th>#</th>
-								<th>Data</th>
-								<th>Valor</th>
-								<th>Endereço de Entrega</th>
-								<th></th>
+								<th>Nome</th>
+								<th>Preço</th>
 							</tr>
 						</thead>
 						<tbody>
-							<tr th:each="purchaseOrder,iter : ${purchaseOrders}">
+							<tr th:each="item,iter : ${items}">
 								<td th:text="${iter.index + 1}"></td>
-								<td th:text="${#dates.format(purchaseOrder.date, 'dd/MM/yyyy')}"></td>
-								<td th:text="'R$ ' + ${purchaseOrder.amount}"></td>
-								<td th:text="${purchaseOrder.deliveryAddress}"></td>
-								<td class="pr-0">
-									<a th:href="@{/purchase-order/details/{id}(id = ${purchaseOrder.id})}">
-										<button type="button" class="btn btn-primary float-right">
-											<i class="fas fa-search"></i> Ver Detalhes
-										</button>
-									</a>
-								</td>
+								<td th:text="${item.dish.name}"></td>
+								<td th:text="'R$ '+${item.dish.price}"></td>
 							</tr>
 						</tbody>
 					</table>
